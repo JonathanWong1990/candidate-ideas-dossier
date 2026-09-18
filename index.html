@@ -312,13 +312,31 @@ Demand = 0.35 Subway Ridership + 0.25 Taxi Activity + 0.20 Tourist POIs + 0.20 P
               <tr><td>1</td><td>Restroom supply</td><td class="hl-l">Confirmed good</td><td><code>i7jb-7jku</code></td><td>1,066 records, 975 Operational — matches the "973" cited figure almost exactly. 99% of operational restrooms have hours listed.</td></tr>
               <tr><td>2</td><td>Taxi demand</td><td><strong>Still a problem</strong></td><td>Local <code>NYC_taxi.csv</code></td><td>Confirmed dead end — this is the Kaggle "Trip Duration" dataset (coords + timestamps only, no fare/zone/trip-count). Needs a real TLC zone extract from the professor, or drop this layer.</td></tr>
               <tr><td>3</td><td>Subway demand</td><td class="hl-l">Fixed</td><td>Stations <code>39hk-dx4f</code>, OD <code>y2qv-fytt</code> — on <strong>data.ny.gov</strong>, not NYC Open Data (original proposal mis-cited the portal)</td><td>Real proof-of-concept: 424 stations × 24 hours, aggregated server-side (never downloaded the 121M-row raw file).</td></tr>
-              <tr><td>4</td><td>Parks</td><td class="hl-l">Confirmed good</td><td><code>enfh-gkve</code></td><td>Geometry/name/class/acreage all present as claimed.</td></tr>
+              <tr><td>4</td><td>Parks</td><td class="hl-l">Confirmed good</td><td><code>enfh-gkve</code></td><td>Geometry/name/class/acreage all present as claimed. Row-level completeness not spot-checked beyond schema.</td></tr>
               <tr><td>5</td><td>Tourist POIs</td><td><strong>Problem, newly found</strong></td><td><code>rxuy-2muj</code> "CommonPlace"</td><td>Real and live (20,448 rows) but is a generic city-facilities layer — schools, playgrounds, comfort stations — not curated attractions, no footfall field.</td></tr>
               <tr><td>6</td><td>Geography (NTAs)</td><td class="hl-l">Confirmed good</td><td><code>9nt8-h7nd</code></td><td>Correct join-key fields present.</td></tr>
               <tr><td>7</td><td>Cost/ROI benchmark</td><td class="hl-l">Confirmed good, exceeded expectations</td><td>Parks Capital Tracker <code>4hcv-tc5r</code> + NYCEDC press release</td><td>169 real restroom/comfort-station capital projects with actual dollar figures (e.g. $877K, $8.77M). NYCEDC "$4M/17 units" confirmed current via Sept 2026 press coverage — real, but press-release sourcing, not a structured dataset.</td></tr>
             </tbody>
           </table>
         </div>
+
+        <h3>The taxi verdict, in full — this is a go/no-go item, not a data-cleaning job</h3>
+        <p>Read the file and its data dictionary directly: 1,458,644 rows, columns <code>id, vendor_id, pickup_datetime, dropoff_datetime, passenger_count, pickup/dropoff lat/long, trip_duration</code> — nothing else. Row count and field list match Kaggle's "NYC Taxi Trip Duration" competition <code>train.csv</code> exactly, and every sampled date is from 2016. There's no fare, no zone ID, no trip counts. It <em>could</em> in principle be spatially joined (pickup lat/long → NTA polygon) into a rough trip-count-by-zone-by-hour proxy, since it does have per-trip timestamps — but that's unplanned GIS work on top of data that's already a decade stale and still has no monetary signal. <strong>Recommendation: ask the professor directly whether a different, TLC zone-level file was intended</strong>, rather than presenting this file as the demand layer.</p>
+
+        <h3>The tourist-POI problem, in full</h3>
+        <p><code>rxuy-2muj</code> is real, but its actual resource endpoint returns empty field objects — it's a "map" asset, not a queryable table. The underlying tabular view (<code>t95h-5fsr</code>) has fields <code>the_geom, segmentid, complexid, saftype, placeid, bin, source, sosindicator, facility_domains, boroughcode, facility_type, feature_name, security_level</code> — sampled rows are DOE schools, comfort stations, and playgrounds, tagged with numeric domain/type codes and no bundled lookup table, no human-readable "tourism" category, and no visitor-volume field anywhere. Using it as tourist demand would mean finding a code legend elsewhere, filtering to a probably-small tourism-relevant subset, and still having zero footfall data at the end. Same tier of problem as taxi — an open item, not solved.</p>
+
+        <h3>Real capital-project cost benchmarks (better than the proposal expected)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Project</th><th class="num">Cost</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Abraham Lincoln Playground Public Restroom Building Reconstruction</td><td class="num">$877,000</td><td>Completed 2021</td></tr>
+              <tr><td>Hunts Point (multi-site) Public Restroom Building Reconstruction</td><td class="num">$8,772,000</td><td>Completed 2018</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>169 real restroom/comfort-station capital projects total, pulled from NYC's own Parks Capital Project Tracker (<code>4hcv-tc5r</code> — the proposal cited this source by name only, not by ID; the real live ID was found). <code>totalfunding</code> is free text (<code>"$877,000"</code>, <code>"Greater than $10 million"</code>) and needs cleaning before it can be averaged, but this is a stronger, ready-to-use ROI benchmark than the proposal anticipated. The NYCEDC "$4M for 17 modular units" figure is separately confirmed real and current (Sept 2026 NYCEDC/Mayor's Office press release: Throne Labs selected to deliver 17 ADA-accessible units citywide, 4 boroughs at 4 units each, Staten Island 1) — cite it as a press release, since no structured dataset backs it.</p>
 
         <h3>Real data already in hand: citywide subway ridership by hour</h3>
         <p>Proof of concept for the "Hours Gap" component — aggregated live from the OD dataset, one representative day, citywide:</p>
@@ -336,6 +354,16 @@ Demand = 0.35 Subway Ridership + 0.25 Taxi Activity + 0.20 Tourist POIs + 0.20 P
           </table>
         </div>
         <p>Clear double-peak (8am/5pm rush) with a genuine low overnight — exactly the shape the "Hours Gap" metric needs to check restroom hours against. Full 424-station × 24-hour breakdown saved to disk (see below), not yet expanded past this one representative day.</p>
+
+        <div class="code-block">
+          <span class="fname">actual SoQL query used — the OD dataset is 121,209,974 rows, never downloaded raw</span>
+          <pre><code>$select=origin_station_complex_id,origin_station_complex_name,
+        hour_of_day,sum(estimated_average_ridership) as total_origin_ridership,
+        count(*) as n_od_pairs
+$where=timestamp between '2025-09-09T00:00:00' and '2025-09-09T23:59:59'
+$group=origin_station_complex_id,origin_station_complex_name,hour_of_day</code></pre>
+        </div>
+        <p>A full-dataset or full-month <code>$group</code> timed out after 60–180s; scoping to one weekday returned in ~12s. For the real analysis, pull a handful of representative days (weekday + weekend, a few months apart) the same way — one day-scoped query at a time — rather than one unscoped aggregation over the whole year.</p>
 
         <div class="callout loo">
           <span class="tag">Open gaps to say out loud</span>
