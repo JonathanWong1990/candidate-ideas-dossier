@@ -1,0 +1,355 @@
+<!-- Two Candidate Project Ideas — Research Dossier -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Candidate Ideas Dossier</title>
+<style>
+  :root{
+    --bg:#F6F4EF;
+    --surface:#EDEAE1;
+    --surface-2:#E2DED2;
+    --ink:#211E19;
+    --ink-muted:#5C574C;
+    --ink-faint:#8A8474;
+    --border:#DAD5C6;
+    --spidey:#A6332C;
+    --spidey-strong:#7C231D;
+    --spidey-tint:#F3E2E0;
+    --loo:#1F5C6B;
+    --loo-strong:#153F49;
+    --loo-tint:#DEEAEC;
+    --neutral-accent:#4A4738;
+    --code-bg:#211E19;
+    --code-ink:#EDE9DE;
+    --code-accent:#D9C08A;
+    --shadow: 0 1px 2px rgba(30,25,15,0.07), 0 6px 20px rgba(30,25,15,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17140F; --surface:#211D16; --surface-2:#2B2519;
+      --ink:#EDE9DE; --ink-muted:#B9B29F; --ink-faint:#8C8570;
+      --border:#3A3324;
+      --spidey:#E2685F; --spidey-strong:#F0958D; --spidey-tint:#2E1B18;
+      --loo:#5FAEBF; --loo-strong:#8FCBD8; --loo-tint:#132B30;
+      --neutral-accent:#C9C3AC;
+      --code-bg:#0E0C09; --code-ink:#E7E2D3; --code-accent:#E4CE99;
+      --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17140F; --surface:#211D16; --surface-2:#2B2519;
+    --ink:#EDE9DE; --ink-muted:#B9B29F; --ink-faint:#8C8570;
+    --border:#3A3324;
+    --spidey:#E2685F; --spidey-strong:#F0958D; --spidey-tint:#2E1B18;
+    --loo:#5FAEBF; --loo-strong:#8FCBD8; --loo-tint:#132B30;
+    --neutral-accent:#C9C3AC;
+    --code-bg:#0E0C09; --code-ink:#E7E2D3; --code-accent:#E4CE99;
+    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Source Sans 3", system-ui, -apple-system, sans-serif;
+    font-size:16px; line-height:1.62; padding-inline:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:"Archivo", system-ui, sans-serif; color:var(--ink); line-height:1.15; overflow-wrap:break-word; font-weight:800; }
+  code, pre, .mono, table td.num, table th.num{ font-family:"IBM Plex Mono", ui-monospace, Menlo, monospace; }
+  a{ color:var(--neutral-accent); }
+  .shell{
+    max-width:1180px; margin:0 auto; display:grid;
+    grid-template-columns:240px minmax(0,760px); gap:48px;
+    padding-block:36px 90px; justify-content:center;
+  }
+  .shell > *{ min-width:0; }
+  @media (max-width:900px){ .shell{ grid-template-columns:1fr; gap:22px; } }
+
+  .page-header{ grid-column:1/-1; margin:0 0 6px; }
+  .eyebrow{ font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--neutral-accent); display:flex; align-items:center; gap:8px; }
+  .eyebrow::before{ content:""; width:8px; height:8px; border-radius:50%; background:var(--neutral-accent); display:inline-block; }
+  h1.title{ font-size:clamp(28px,4.4vw,42px); margin:10px 0 6px; }
+  .subtitle{ color:var(--ink-muted); font-size:16px; max-width:66ch; margin:0 0 16px; }
+  .meta-row{ display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13px; color:var(--ink-faint); border-top:1px solid var(--border); padding-top:12px; }
+  .meta-row b{ color:var(--ink-muted); font-weight:600; }
+
+  .stat-band{ grid-column:1/-1; margin:20px 0 4px; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:var(--shadow); }
+  @media (max-width:640px){ .stat-band{ grid-template-columns:repeat(2,1fr); } }
+  .stat{ background:var(--surface); padding:16px 15px; }
+  .stat .n{ font-family:"IBM Plex Mono",monospace; font-size:23px; font-weight:600; color:var(--neutral-accent); }
+  .stat .n.spidey{ color:var(--spidey); } .stat .n.loo{ color:var(--loo); }
+  .stat .l{ font-size:12px; color:var(--ink-muted); margin-top:4px; }
+
+  nav.toc{ align-self:start; position:sticky; top:20px; }
+  nav.toc .toc-label{ font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:8px; }
+  nav.toc ol{ list-style:none; margin:0; padding:0; counter-reset:toc; display:flex; flex-direction:column; gap:1px; }
+  nav.toc li{ counter-increment:toc; }
+  nav.toc a{ display:flex; gap:8px; padding:5px 7px; border-radius:6px; font-size:13px; color:var(--ink-muted); text-decoration:none; line-height:1.3; }
+  nav.toc a.sub{ padding-left:22px; font-size:12px; }
+  nav.toc a:hover{ background:var(--surface); color:var(--ink); }
+  nav.toc a::before{ content:counter(toc,decimal-leading-zero); font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--neutral-accent); flex-shrink:0; }
+  nav.toc a.sub::before{ content:""; }
+  @media (max-width:900px){ nav.toc{ position:static; } nav.toc ol{ flex-direction:row; overflow-x:auto; padding-bottom:6px; } nav.toc a{ white-space:nowrap; } nav.toc a.sub{ display:none; } }
+
+  article{ min-width:0; }
+  .lede{ font-size:17px; color:var(--ink-muted); max-width:64ch; margin:0 0 8px; }
+  section{ padding-top:40px; margin-top:40px; border-top:1px solid var(--border); scroll-margin-top:16px; }
+  section:first-of-type{ border-top:none; margin-top:24px; padding-top:0; }
+  .sec-kicker{ font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--neutral-accent); letter-spacing:.04em; }
+  h2{ font-size:25px; margin:4px 0 12px; }
+  h3{ font-size:17px; margin:22px 0 8px; }
+  p{ margin:0 0 13px; max-width:68ch; }
+  ul,ol{ margin:0 0 14px; padding-left:21px; } li{ margin-bottom:5px; max-width:64ch; }
+  strong{ color:var(--ink); }
+
+  .idea-block{ border-radius:12px; padding:22px 22px 6px; margin:18px 0 30px; border:1px solid var(--border); }
+  .idea-block.spidey{ background:linear-gradient(180deg, var(--spidey-tint), transparent 140px); border-color:color-mix(in srgb, var(--spidey) 30%, var(--border)); }
+  .idea-block.loo{ background:linear-gradient(180deg, var(--loo-tint), transparent 140px); border-color:color-mix(in srgb, var(--loo) 30%, var(--border)); }
+  .idea-label{ font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; display:inline-block; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .idea-label.orig{ background:var(--surface-2); color:var(--ink-muted); }
+  .idea-label.new.spidey{ background:var(--spidey); color:#fff; }
+  .idea-label.new.loo{ background:var(--loo); color:#fff; }
+
+  .callout{ border-radius:10px; padding:15px 17px; margin:16px 0; border:1px solid var(--border); font-size:14.5px; }
+  .callout .tag{ font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; display:block; margin-bottom:5px; font-weight:700; }
+  .callout.spidey{ background:var(--spidey-tint); border-color:color-mix(in srgb, var(--spidey) 35%, var(--border)); } .callout.spidey .tag{ color:var(--spidey-strong); }
+  .callout.loo{ background:var(--loo-tint); border-color:color-mix(in srgb, var(--loo) 35%, var(--border)); } .callout.loo .tag{ color:var(--loo-strong); }
+  .callout.neutral{ background:var(--surface); } .callout.neutral .tag{ color:var(--ink-faint); }
+
+  .table-wrap{ overflow-x:auto; margin:14px 0 20px; border:1px solid var(--border); border-radius:10px; }
+  table{ border-collapse:collapse; width:100%; font-size:13.3px; min-width:420px; }
+  th,td{ padding:8px 12px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; }
+  thead th{ background:var(--surface); color:var(--ink-muted); font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.02em; }
+  tbody tr:last-child td{ border-bottom:none; } tbody tr:hover{ background:var(--surface); }
+  td.num,th.num{ font-variant-numeric:tabular-nums; text-align:right; }
+  td.hl-s{ color:var(--spidey-strong); font-weight:700; } td.hl-l{ color:var(--loo-strong); font-weight:700; }
+
+  .code-block{ background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:14px 16px; overflow-x:auto; margin:12px 0 18px; box-shadow:var(--shadow); }
+  .code-block .fname{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--code-accent); margin-bottom:8px; display:block; opacity:.85; }
+  .code-block pre{ margin:0; } .code-block code{ font-size:12.5px; line-height:1.55; white-space:pre; }
+  code:not(pre code){ background:var(--surface-2); padding:1.5px 6px; border-radius:4px; font-size:.87em; }
+  .filepath{ font-family:"IBM Plex Mono",monospace; font-size:12px; background:var(--surface-2); padding:8px 12px; border-radius:8px; display:block; overflow-x:auto; margin:8px 0; }
+  footer{ grid-column:1/-1; max-width:820px; margin:56px auto 0; padding-top:18px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-faint); text-align:center; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Source+Sans+3:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<div class="shell">
+  <div class="page-header">
+    <div class="eyebrow">PMBA6093 FINAL PROJECT — CANDIDATE IDEAS DUE DILIGENCE</div>
+    <h1 class="title">Two Candidate Ideas, Stress-Tested</h1>
+    <p class="subtitle">Both started as pitches with little or no real data behind them. This is the full record — the original pitch as proposed, kept intact, next to what actually held up when checked against live data.</p>
+    <div class="meta-row">
+      <span><b>Status</b> — live, updating</span>
+      <span><b>As of</b> 2026-09-19</span>
+      <span><b>Data</b> NYC/NY State Open Data, verified live</span>
+    </div>
+  </div>
+
+  <div class="stat-band">
+    <div class="stat"><div class="n spidey">3 / 3</div><div class="l">Spider-Man data legs now real (1 substituted)</div></div>
+    <div class="stat"><div class="n loo">4 / 7</div><div class="l">Restroom data components fully clean</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">critical flaws found in the original decks</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">hidden gaps — every open item named below</div></div>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-label">On this page</div>
+    <ol>
+      <li><a href="#overview">Overview &amp; recommendation</a></li>
+      <li><a href="#spiderman">Spider-Man Analytics</a></li>
+      <li><a class="sub" href="#sm-original">Original pitch</a></li>
+      <li><a class="sub" href="#sm-new">New research</a></li>
+      <li><a href="#restroom">Restroom Gap &amp; ROI</a></li>
+      <li><a class="sub" href="#rr-original">Original pitch</a></li>
+      <li><a class="sub" href="#rr-new">New research</a></li>
+    </ol>
+  </nav>
+
+  <article>
+    <section id="overview">
+      <span class="sec-kicker">01</span>
+      <h2>Overview &amp; recommendation</h2>
+      <p class="lede">Neither idea started with real data. Spider-Man's deck had zero — every number invented. The restroom proposal was well-designed but had two datasets that turned out to be wrong or unusable. Both have now been checked, fixed where possible, and every remaining gap is named rather than hidden.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Spider-Man Sighting Analytics</th><th>NYC Restroom Gap &amp; ROI</th></tr></thead>
+          <tbody>
+            <tr><td>Original state</td><td>Zero real data — every number invented, R code didn't run</td><td>Well-designed proposal, real cited sources, but 2 of the datasets actually pulled were wrong or unusable</td></tr>
+            <tr><td>Data components</td><td>3 (crime, building height, traffic)</td><td>7 (restroom supply, taxi, subway, parks, tourist POI, geography, cost/ROI)</td></tr>
+            <tr><td>Now solid</td><td>Building height (strong); crime usable but stale</td><td>Restroom supply, parks, geography, cost/ROI (4 of 7)</td></tr>
+            <tr><td>Just fixed</td><td>—</td><td>Subway demand (real proof-of-concept pulled live)</td></tr>
+            <tr><td>Disclosed compromise</td><td>Traffic → substituted crash density (real, full coverage, different construct)</td><td>—</td></tr>
+            <tr><td>Still open</td><td>Crime data 11–13 years old; neighborhood boundaries approximate</td><td>Taxi demand (dead end); Tourist POI (miscategorized dataset)</td></tr>
+            <tr><td>Has a computed result already?</td><td class="hl-s">Yes — full 10-neighborhood ranking computed</td><td>Not yet — components verified, full index not yet run end-to-end</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout neutral">
+        <span class="tag">Recommendation</span>
+        <p>Neither idea is a trap any more. Restroom is marginally closer to fully backed (more components already clean). Spider-Man is the flashier hook and now has an actual computed ranking to show, not a mockup. Whichever the professor prefers, you can state exactly what's real, what's a disclosed proxy, and what's still open.</p>
+      </div>
+    </section>
+
+    <section id="spiderman">
+      <span class="sec-kicker">02</span>
+      <h2>Spider-Man Sighting Analytics</h2>
+
+      <div id="sm-original" class="idea-block spidey">
+        <span class="idea-label orig">Original pitch — unchanged</span>
+        <p><strong>"Where is Most Likely to Meet Spider-Man?"</strong> — Spider-Man treated as a high-value emergency responder subject to spatial/infrastructure constraints. A <strong>Spider-Man Sighting Probability Index (SSPI)</strong> ranks NYC neighborhoods:</p>
+        <div class="code-block"><pre><code>SSPI = 0.40 (Building Density) + 0.40 (Crime Density) + 0.20 (Traffic Index)
+*normalized on a 0-1 min-max scale before linear weighting</code></pre></div>
+        <p><strong>The three decision variables as originally framed:</strong> (1) <em>Vertical Density</em> (40%) — web-pendulum mechanics need tall anchors ≥100m; outer-borough low-rises limit movement speed. (2) <em>Operational Demand</em> (40%) — NYPD precinct data on violent crime, robberies, high-priority calls. (3) <em>Traffic Advantage</em> (20%) — gridlock gives web-swinging a speed edge over ground units.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Neighborhood</th><th class="num">Avg height</th><th class="num">Density score</th><th class="num">Crime/10k</th><th class="num">Traffic index</th><th class="num">SSPI (original)</th><th>Primary driver</th></tr></thead>
+            <tbody>
+              <tr><td>Midtown Manhattan</td><td class="num">220 m</td><td class="num">9.8</td><td class="num">85</td><td class="num">9.5</td><td class="num hl-s">95.8</td><td>Optimal anchors &amp; high crime</td></tr>
+              <tr><td>Hell's Kitchen</td><td class="num">95 m</td><td class="num">6.5</td><td class="num">92</td><td class="num">8.5</td><td class="num">80.1</td><td>Extreme crime density</td></tr>
+              <tr><td>Financial District</td><td class="num">200 m</td><td class="num">9.2</td><td class="num">45</td><td class="num">8.8</td><td class="num">66.2</td><td>Vertical infrastructure</td></tr>
+              <tr><td>Chelsea</td><td class="num">110 m</td><td class="num">7.0</td><td class="num">60</td><td class="num">7.8</td><td class="num">60.6</td><td>Balanced patrol zone</td></tr>
+              <tr><td>Upper West Side</td><td class="num">90 m</td><td class="num">6.0</td><td class="num">35</td><td class="num">6.8</td><td class="num">36.9</td><td>Residential patrol zone</td></tr>
+              <tr><td>DUMBO (Brooklyn)</td><td class="num">75 m</td><td class="num">5.2</td><td class="num">40</td><td class="num">7.0</td><td class="num">36.8</td><td>Bridge transit corridor</td></tr>
+              <tr><td>Williamsburg</td><td class="num">60 m</td><td class="num">4.0</td><td class="num">55</td><td class="num">6.2</td><td class="num">36.8</td><td>Low-rise commercial zone</td></tr>
+              <tr><td>Upper East Side</td><td class="num">85 m</td><td class="num">5.8</td><td class="num">30</td><td class="num">6.5</td><td class="num">31.7</td><td>Low incident density</td></tr>
+              <tr><td>Astoria (Queens)</td><td class="num">45 m</td><td class="num">2.5</td><td class="num">50</td><td class="num">6.0</td><td class="num">25.7</td><td>Transit bottleneck zone</td></tr>
+              <tr><td>Forest Hills (Queens)</td><td class="num">35 m</td><td class="num">1.5</td><td class="num">25</td><td class="num">4.5</td><td class="num">0.0</td><td>Sub-optimal swing physics</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Environmental multipliers proposed:</strong> heavy precipitation pushes flight altitude down into street canyons (40–90m), boosting Hell's Kitchen/Chelsea; wind &gt;30mph pushes patrols from FiDi's supertalls into Midtown's denser grid; nighttime (18:00–02:00) crime surges shift 82% of encounters to Midtown.</p>
+        <p style="color:var(--ink-faint); font-size:13px;">Note: as originally submitted, none of the above numbers cited a source, and the accompanying R script was 5 neighborhoods hand-typed into <code>data.frame()</code> with a syntax error (an unescaped apostrophe in <code>'Hell's Kitchen'</code> breaks the string literal) — it would not run. That gap is what the research below addresses.</p>
+      </div>
+
+      <div id="sm-new" class="idea-block spidey">
+        <span class="idea-label new spidey">New research — added 2026-09-18/19</span>
+        <p>Same three-part formula, same weights (0.40/0.40/0.20) — every input replaced with live-verified real data.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Component</th><th>Dataset</th><th class="num">Live rows checked</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>Crime density</td><td><code>qgea-i56i</code> NYPD Complaint Data Historic</td><td class="num">10,071,507</td><td>Usable, but stale — local file is a 2013–2015 slice (1,048,575 rows, hit Excel's row cap). Full live history confirmed to exist, not yet pulled.</td></tr>
+              <tr><td>Building height</td><td><code>5zhs-2jue</code> Building Footprints, field <code>height_roof</code></td><td class="num">1,083,030</td><td class="hl-s">Solid — real per-building heights (9–1,550 ft), current (weekly updates), no gaps.</td></tr>
+              <tr><td>Traffic (as specified)</td><td><code>i4gi-tjb9</code> DOT Traffic Speeds NBE</td><td class="num">104,074,901</td><td>Doesn't work — every active sensor sits on a highway/bridge/tunnel approach. Zero coverage of neighborhood streets in any of the 10 target areas.</td></tr>
+              <tr><td>Traffic (substitute used)</td><td><code>h9gi-nx95</code> Motor Vehicle Collisions, filtered to 2013–2015</td><td class="num">2,269,187 (527,687 in window)</td><td>Real, full coverage — but measures crash frequency, not congestion/speed. Disclosed compromise.</td></tr>
+              <tr><td>Geography</td><td><code>9nt8-h7nd</code> 2020 NTAs</td><td class="num">262</td><td>Confirmed — common join unit for all three components (point-in-polygon for crime/collisions, <code>within_polygon()</code> for buildings).</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>The real preliminary SSPI (computed, not invented)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th class="num">Rank</th><th>Neighborhood</th><th class="num">Real SSPI</th><th class="num">Crime/sq mi</th><th class="num">Avg height (ft)</th><th class="num">Collisions/sq mi</th><th>NTA note</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Midtown Manhattan</td><td class="num hl-s">99.2</td><td class="num">23,840</td><td class="num">185.6</td><td class="num">14,042</td><td>Exact NTA match — matches original deck's #1 (95.8)</td></tr>
+              <tr><td class="num">2</td><td>Financial District</td><td class="num">56.7</td><td class="num">8,182</td><td class="num">189.0</td><td class="num">5,103</td><td>NTA includes Battery Park City</td></tr>
+              <tr><td class="num">3</td><td>Hell's Kitchen</td><td class="num">50.9</td><td class="num">15,804</td><td class="num">69.8</td><td class="num">10,944</td><td>Exact NTA match</td></tr>
+              <tr><td class="num">4</td><td>Chelsea</td><td class="num">39.6</td><td class="num">10,848</td><td class="num">79.0</td><td class="num">8,208</td><td>NTA = Chelsea-Hudson Yards, likely overstates height</td></tr>
+              <tr><td class="num">5</td><td>Upper West Side</td><td class="num">31.3</td><td class="num">9,600</td><td class="num">79.9</td><td class="num">4,331</td><td>Combined 3 sub-NTAs</td></tr>
+              <tr><td class="num">6</td><td>Upper East Side</td><td class="num">29.5</td><td class="num">6,287</td><td class="num">81.7</td><td class="num">6,729</td><td>Combined 3 sub-NTAs</td></tr>
+              <tr><td class="num">7</td><td>DUMBO</td><td class="num">29.0</td><td class="num">10,260</td><td class="num">55.9</td><td class="num">5,810</td><td>NTA = Downtown Brooklyn-DUMBO-Boerum Hill, likely inflated</td></tr>
+              <tr><td class="num">8</td><td>Williamsburg</td><td class="num">15.5</td><td class="num">7,032</td><td class="num">42.9</td><td class="num">3,115</td><td>Exact NTA match</td></tr>
+              <tr><td class="num">9</td><td>Astoria</td><td class="num">2.3</td><td class="num">3,343</td><td class="num">25.9</td><td class="num">1,737</td><td>Combined 3 sub-NTAs, excludes Astoria Park</td></tr>
+              <tr><td class="num">10</td><td>Forest Hills</td><td class="num hl-s">0.0</td><td class="num">2,120</td><td class="num">25.9</td><td class="num">1,713</td><td>Exact NTA match — matches original deck's last (0.0)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Only the two endpoints of the original fabricated table were known in advance (Midtown #1, Forest Hills last) — both matched. Reassuring, but thin: 2 of 10 points, not a full validation of the middle order.</p>
+
+        <div class="callout spidey">
+          <span class="tag">Open gaps to say out loud</span>
+          <ul>
+            <li><strong>Crime data is 11–13 years old</strong> — fine for a relative ranking, not for "today's crime rate." The live full dataset (10M rows, 2006–present) exists for a v2 pull.</li>
+            <li><strong>Traffic is a substitute</strong>, not the real thing — crash density, not congestion/speed. State as a scope compromise.</li>
+            <li><strong>Neighborhood boundaries are approximate</strong> — DUMBO's NTA really absorbs Downtown Brooklyn (likely inflates its score), and UWS/UES/Astoria/Chelsea each required combining multiple sub-NTAs.</li>
+          </ul>
+        </div>
+        <p>Files: all source pulls, sub-NTA-level component data, and the DOT coverage-gap evidence are in:</p>
+        <span class="filepath">~/Desktop/MBA/PMBA6093 Analytics for Managers/Final Project/Spiderman_Real_Data/</span>
+      </div>
+    </section>
+
+    <section id="restroom">
+      <span class="sec-kicker">03</span>
+      <h2>NYC Restroom Gap &amp; ROI</h2>
+
+      <div id="rr-original" class="idea-block loo">
+        <span class="idea-label orig">Original pitch — unchanged</span>
+        <p><strong>"When Nature Calls, Where Should NYC Answer?"</strong> — NYC Council reported 973 operational public restrooms, only 8 open 24/7, 49.42% of residents within a 5-minute walk (Nov 2025). The project asks where access is weakest around tourist attractions, subway stations, and parks, and whether the city should extend hours, reopen, deploy modular units, or build permanently.</p>
+        <p><strong>Primary audience:</strong> Mayor's Office of Operations (set citywide priorities), NYC Parks (reopen/repair/extend/build), NYC DOT Public Realm (site modular units), MTA (flag high-ridership stations with weak nearby access).</p>
+        <p><strong>Two-stage model:</strong> Stage 1—Need ranks 500m hexagons or neighborhood units; Stage 2—Intervention compares alternatives only within the verified high-need shortlist, so a high need score isn't mistaken for a high-return project.</p>
+        <div class="code-block"><pre><code>RGI = 100 x [0.35 Demand + 0.30 Supply Gap + 0.15 Hours Gap + 0.10 Accessibility Gap + 0.10 Equity Need]
+Demand = 0.35 Subway Ridership + 0.25 Taxi Activity + 0.20 Tourist POIs + 0.20 Park Exposure</code></pre></div>
+        <p><strong>Original data source plan:</strong></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Data block</th><th>Source / ID cited</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>Restroom supply</td><td>NYC Public Restrooms <code>i7jb-7jku</code></td><td>Supply, hours, quality</td></tr>
+              <tr><td>Taxi demand</td><td>Professor dataset; TLC field guide</td><td>Floating demand</td></tr>
+              <tr><td>Subway demand</td><td>Stations <code>39hk-dx4f</code>; OD <code>y2qv-fytt</code></td><td>Passenger exposure</td></tr>
+              <tr><td>Parks</td><td>Parks Properties <code>enfh-gkve</code></td><td>Park exposure</td></tr>
+              <tr><td>Tourist POIs</td><td>CommonPlace <code>rxuy-2muj</code></td><td>Attraction concentration</td></tr>
+              <tr><td>Geography</td><td>2020 NTAs <code>9nt8-h7nd</code></td><td>Common map unit</td></tr>
+              <tr><td>Cost/options</td><td>Parks projects; NYCEDC pilot</td><td>SROI scenarios</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Social ROI:</strong> SROI = NPV ÷ CapEx, also cost per added visit/open hour/person within 5-min walk. NYCEDC benchmark: $4M for 17 modular units (production, delivery, installation, maintenance) — not a clean construction price, use ranges. <strong>Stated limitations (already in the original deck):</strong> restroom status isn't real-time; POI count ≠ visitation; park acreage ≠ attendance; MTA OD ridership is estimated; taxi activity omits walkers/bus riders.</p>
+      </div>
+
+      <div id="rr-new" class="idea-block loo">
+        <span class="idea-label new loo">New research — added 2026-09-18/19</span>
+        <p>Two flaws found first: the subway file pulled was monthly system-wide totals (no station/hour granularity — useless for "Hours Gap"), and a bike/pedestrian file not in the original plan turned out to cover only 29 sensors for one month. Full re-verification of all 7 components below.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Component</th><th>Status</th><th>Dataset actually used</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Restroom supply</td><td class="hl-l">Confirmed good</td><td><code>i7jb-7jku</code></td><td>1,066 records, 975 Operational — matches the "973" cited figure almost exactly. 99% of operational restrooms have hours listed.</td></tr>
+              <tr><td>2</td><td>Taxi demand</td><td><strong>Still a problem</strong></td><td>Local <code>NYC_taxi.csv</code></td><td>Confirmed dead end — this is the Kaggle "Trip Duration" dataset (coords + timestamps only, no fare/zone/trip-count). Needs a real TLC zone extract from the professor, or drop this layer.</td></tr>
+              <tr><td>3</td><td>Subway demand</td><td class="hl-l">Fixed</td><td>Stations <code>39hk-dx4f</code>, OD <code>y2qv-fytt</code> — on <strong>data.ny.gov</strong>, not NYC Open Data (original proposal mis-cited the portal)</td><td>Real proof-of-concept: 424 stations × 24 hours, aggregated server-side (never downloaded the 121M-row raw file).</td></tr>
+              <tr><td>4</td><td>Parks</td><td class="hl-l">Confirmed good</td><td><code>enfh-gkve</code></td><td>Geometry/name/class/acreage all present as claimed.</td></tr>
+              <tr><td>5</td><td>Tourist POIs</td><td><strong>Problem, newly found</strong></td><td><code>rxuy-2muj</code> "CommonPlace"</td><td>Real and live (20,448 rows) but is a generic city-facilities layer — schools, playgrounds, comfort stations — not curated attractions, no footfall field.</td></tr>
+              <tr><td>6</td><td>Geography (NTAs)</td><td class="hl-l">Confirmed good</td><td><code>9nt8-h7nd</code></td><td>Correct join-key fields present.</td></tr>
+              <tr><td>7</td><td>Cost/ROI benchmark</td><td class="hl-l">Confirmed good, exceeded expectations</td><td>Parks Capital Tracker <code>4hcv-tc5r</code> + NYCEDC press release</td><td>169 real restroom/comfort-station capital projects with actual dollar figures (e.g. $877K, $8.77M). NYCEDC "$4M/17 units" confirmed current via Sept 2026 press coverage — real, but press-release sourcing, not a structured dataset.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Real data already in hand: citywide subway ridership by hour</h3>
+        <p>Proof of concept for the "Hours Gap" component — aggregated live from the OD dataset, one representative day, citywide:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th class="num">Hour</th><th class="num">Riders (citywide)</th><th class="num">Hour</th><th class="num">Riders (citywide)</th></tr></thead>
+            <tbody>
+              <tr><td class="num">06:00</td><td class="num">162,907</td><td class="num">15:00</td><td class="num">294,036</td></tr>
+              <tr><td class="num">07:00</td><td class="num">331,233</td><td class="num">16:00</td><td class="num">350,122</td></tr>
+              <tr><td class="num">08:00</td><td class="num hl-l">426,704</td><td class="num">17:00</td><td class="num hl-l">446,538</td></tr>
+              <tr><td class="num">09:00</td><td class="num">266,773</td><td class="num">18:00</td><td class="num">325,452</td></tr>
+              <tr><td class="num">12:00</td><td class="num">164,879</td><td class="num">21:00</td><td class="num">124,846</td></tr>
+              <tr><td class="num">02:00</td><td class="num">6,034 (lowest)</td><td class="num">23:00</td><td class="num">50,474</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Clear double-peak (8am/5pm rush) with a genuine low overnight — exactly the shape the "Hours Gap" metric needs to check restroom hours against. Full 424-station × 24-hour breakdown saved to disk (see below), not yet expanded past this one representative day.</p>
+
+        <div class="callout loo">
+          <span class="tag">Open gaps to say out loud</span>
+          <ul>
+            <li><strong>Taxi demand is unresolved</strong> — not fixable by re-pulling. Needs a real professor-provided zone/fare extract, or drop the layer and re-weight the RGI formula.</li>
+            <li><strong>Tourist POI data is miscategorized</strong> — "CommonPlace" isn't a tourism dataset. Needs a real replacement or should be dropped/re-weighted like taxi.</li>
+            <li>Subway demand fix is proof-of-concept only — <strong>one day</strong>, not a full month/year aggregation yet.</li>
+          </ul>
+        </div>
+        <p>Files: subway station/hour breakdown, parks capital tracker filter, and full verification notes are in:</p>
+        <span class="filepath">~/Desktop/MBA/PMBA6093 Analytics for Managers/Final Project/Restroom_Real_Data/</span>
+      </div>
+    </section>
+  </article>
+
+  <footer>Two Candidate Ideas Dossier — PMBA6093 Analytics for Managers, HKU MBA · Updating live, 2026-09-19</footer>
+</div>
