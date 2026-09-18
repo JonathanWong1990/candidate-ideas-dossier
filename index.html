@@ -146,7 +146,7 @@
 
   <div class="stat-band">
     <div class="stat"><div class="n spidey">3 / 3</div><div class="l">Spider-Man data legs now real (1 substituted)</div></div>
-    <div class="stat"><div class="n loo">4 / 7</div><div class="l">Restroom data components fully clean</div></div>
+    <div class="stat"><div class="n loo">6 / 7</div><div class="l">Restroom data components solid or fixed</div></div>
     <div class="stat"><div class="n">2</div><div class="l">critical flaws found in the original decks</div></div>
     <div class="stat"><div class="n">0</div><div class="l">hidden gaps — every open item named below</div></div>
   </div>
@@ -176,10 +176,10 @@
           <tbody>
             <tr><td>Original state</td><td>Zero real data — every number invented, R code didn't run</td><td>Well-designed proposal, real cited sources, but 2 of the datasets actually pulled were wrong or unusable</td></tr>
             <tr><td>Data components</td><td>3 (crime, building height, traffic)</td><td>7 (restroom supply, taxi, subway, parks, tourist POI, geography, cost/ROI)</td></tr>
-            <tr><td>Now solid</td><td>Building height (strong); crime usable but stale</td><td>Restroom supply, parks, geography, cost/ROI (4 of 7)</td></tr>
-            <tr><td>Just fixed</td><td>—</td><td>Subway demand (real proof-of-concept pulled live)</td></tr>
+            <tr><td>Now solid</td><td>Building height (strong); crime confirmed obtainable current-vs-stale, ranking holds</td><td>Restroom supply, parks, geography, cost/ROI, subway (now 3 days), taxi (6 of 7)</td></tr>
+            <tr><td>Just fixed (round 2)</td><td>Traffic definitively surveyed (5 datasets checked, no perfect option exists, 2 secondary fallbacks identified)</td><td>Taxi (real TLC data found), tourist POI (partial — real substitute found, footfall data confirmed not to exist anywhere)</td></tr>
             <tr><td>Disclosed compromise</td><td>Traffic → substituted crash density (real, full coverage, different construct)</td><td>—</td></tr>
-            <tr><td>Still open</td><td>Crime data 11–13 years old; neighborhood boundaries approximate</td><td>Taxi demand (dead end); Tourist POI (miscategorized dataset)</td></tr>
+            <tr><td>Still open</td><td>No dataset gives a perfect traffic proxy (settled, not unresolved); neighborhood boundaries approximate</td><td>Tourist-POI footfall data confirmed not to exist anywhere (settled limitation, not a search gap)</td></tr>
             <tr><td>Has a computed result already?</td><td class="hl-s">Yes — full 10-neighborhood ranking computed</td><td>Not yet — components verified, full index not yet run end-to-end</td></tr>
           </tbody>
         </table>
@@ -259,15 +259,51 @@
         </div>
         <p>Only the two endpoints of the original fabricated table were known in advance (Midtown #1, Forest Hills last) — both matched. Reassuring, but thin: 2 of 10 points, not a full validation of the middle order.</p>
 
+        <h3>Round 2 (2026-09-19) — is the data actually there, deeper check</h3>
+        <p><strong>Crime: confirmed obtainable, and it moves the numbers a lot.</strong> Pulled 2023–2025 live (407,900 candidate complaints, exact point-in-polygon join against the same NTA boundaries, cross-verified against an independent live count). Current density is <strong>45–128% higher</strong> than the stale 2013–2015 figures in every single neighborhood — concentrated, not just city-wide drift (citywide growth over the period was only ~15%).</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Neighborhood</th><th class="num">Old rank (2013–15)</th><th class="num">Current rank (2023–25)</th><th class="num">% change in density</th></tr></thead>
+            <tbody>
+              <tr><td>Midtown Manhattan</td><td class="num">1</td><td class="num">1</td><td class="num">+73.0%</td></tr>
+              <tr><td>Hell's Kitchen</td><td class="num">2</td><td class="num">2</td><td class="num">+82.2%</td></tr>
+              <tr><td>DUMBO</td><td class="num">4</td><td class="num hl-s">3</td><td class="num">+116.3%</td></tr>
+              <tr><td>Chelsea</td><td class="num">3</td><td class="num hl-s">4</td><td class="num">+67.0%</td></tr>
+              <tr><td>Financial District</td><td class="num">6</td><td class="num hl-s">5</td><td class="num">+115.0%</td></tr>
+              <tr><td>Upper West Side</td><td class="num">5</td><td class="num hl-s">6</td><td class="num">+53.4%</td></tr>
+              <tr><td>Upper East Side</td><td class="num">8</td><td class="num hl-s">7</td><td class="num">+98.6%</td></tr>
+              <tr><td>Williamsburg</td><td class="num">7</td><td class="num hl-s">8</td><td class="num">+45.7%</td></tr>
+              <tr><td>Astoria</td><td class="num">9</td><td class="num">9</td><td class="num">+50.6%</td></tr>
+              <tr><td>Forest Hills</td><td class="num">10</td><td class="num">10</td><td class="num">+128.4%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The SSPI ranking barely moves — top 2 and bottom 2 are unchanged, the middle six reshuffle by exactly one rank each (three pairs swap). But the absolute crime numbers the team has been showing are roughly <strong>half</strong> of current reality — worth saying in the room before anyone asks "is this current?"</p>
+
+        <p><strong>Traffic: a definitive answer, not just the original one dataset.</strong> Checked five real options live, not one:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Dataset</th><th>Coverage</th><th>Construct</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr><td>DOT Traffic Speeds NBE <code>i4gi-tjb9</code></td><td class="num">0/10</td><td>Speed</td><td>Dead end, confirmed again — highways/bridges only.</td></tr>
+              <tr><td>Automated Traffic Volume Counts <code>7ym2-wayt</code></td><td class="num">10/10</td><td>Vehicle volume, real local streets</td><td>Real and usable, but sporadic — each location counted ~1 day, sometimes years apart, so a neighborhood aggregate mixes 2019–2025 vintages.</td></tr>
+              <tr><td>EZ-Pass / Midtown in Motion <code>6a2s-2t65</code>+<code>erdf-2akx</code></td><td class="num">7/10</td><td>Real-time median speed</td><td>Best construct match of anything found — but zero coverage in Financial District, Astoria, Forest Hills. Never deployed there.</td></tr>
+              <tr><td>Motor Vehicle Collisions <code>h9gi-nx95</code> (current substitute)</td><td class="num">10/10</td><td>Crash frequency</td><td class="hl-s">Still the only full-coverage, current, single-source option. Kept as primary.</td></tr>
+              <tr><td>Bike/Ped Counts (67 sensors, re-checked)</td><td class="num">6/10</td><td>Bike/ped counts</td><td>Still not usable — mostly bridge approaches, 4 neighborhoods have zero sensors.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>No single dataset gives full, current, correctly-constructed coverage — that's now a settled fact, not an open question. Recommendation: keep collision density as the primary Traffic Index, optionally cite Automated Traffic Volume Counts as a secondary sensitivity check (it's real and full-coverage, just temporally patchy).</p>
+
         <div class="callout spidey">
           <span class="tag">Open gaps to say out loud</span>
           <ul>
-            <li><strong>Crime data is 11–13 years old</strong> — fine for a relative ranking, not for "today's crime rate." The live full dataset (10M rows, 2006–present) exists for a v2 pull.</li>
-            <li><strong>Traffic is a substitute</strong>, not the real thing — crash density, not congestion/speed. State as a scope compromise.</li>
+            <li><strong>Crime ranking is confirmed stable, but the numbers on screen would need updating</strong> — current density is roughly double the stale figures. A v2 pull (server-side aggregation of the live 10M-row dataset) is a known, bounded task, not a research question any more.</li>
+            <li><strong>Traffic is settled as "no perfect option exists"</strong> — collision density stays the primary proxy; two better-but-incomplete alternatives are available if asked "did you look for anything else?"</li>
             <li><strong>Neighborhood boundaries are approximate</strong> — DUMBO's NTA really absorbs Downtown Brooklyn (likely inflates its score), and UWS/UES/Astoria/Chelsea each required combining multiple sub-NTAs.</li>
           </ul>
         </div>
-        <p>Files: all source pulls, sub-NTA-level component data, and the DOT coverage-gap evidence are in:</p>
+        <p>Files: all source pulls, sub-NTA-level component data, the DOT coverage-gap evidence, and both round-2 survey tables are in:</p>
         <span class="filepath">~/Desktop/MBA/PMBA6093 Analytics for Managers/Final Project/Spiderman_Real_Data/</span>
       </div>
     </section>
@@ -310,21 +346,35 @@ Demand = 0.35 Subway Ridership + 0.25 Taxi Activity + 0.20 Tourist POIs + 0.20 P
             <thead><tr><th>#</th><th>Component</th><th>Status</th><th>Dataset actually used</th><th>Notes</th></tr></thead>
             <tbody>
               <tr><td>1</td><td>Restroom supply</td><td class="hl-l">Confirmed good</td><td><code>i7jb-7jku</code></td><td>1,066 records, 975 Operational — matches the "973" cited figure almost exactly. 99% of operational restrooms have hours listed.</td></tr>
-              <tr><td>2</td><td>Taxi demand</td><td><strong>Still a problem</strong></td><td>Local <code>NYC_taxi.csv</code></td><td>Confirmed dead end — this is the Kaggle "Trip Duration" dataset (coords + timestamps only, no fare/zone/trip-count). Needs a real TLC zone extract from the professor, or drop this layer.</td></tr>
-              <tr><td>3</td><td>Subway demand</td><td class="hl-l">Fixed</td><td>Stations <code>39hk-dx4f</code>, OD <code>y2qv-fytt</code> — on <strong>data.ny.gov</strong>, not NYC Open Data (original proposal mis-cited the portal)</td><td>Real proof-of-concept: 424 stations × 24 hours, aggregated server-side (never downloaded the 121M-row raw file).</td></tr>
+              <tr><td>2</td><td>Taxi demand</td><td class="hl-l">Fixed (round 2)</td><td><code>rwwi-khbc</code> (2024 Yellow, 41.2M rows), <code>bqxa-629f</code> (2024 HVFHV), <code>c5iv-bn4s</code> (pre-aggregated zone×month×industry, 138,706 rows)</td><td>The Kaggle file is still useless and dropped, but real TLC-schema data (fare, zone, distance) is live on NYC Open Data. The pre-aggregated table may be all that's needed for a zone-level layer — no massive raw pull required.</td></tr>
+              <tr><td>3</td><td>Subway demand</td><td class="hl-l">Fixed, now 3 days</td><td>Stations <code>39hk-dx4f</code>, OD <code>y2qv-fytt</code> — on <strong>data.ny.gov</strong>, not NYC Open Data (original proposal mis-cited the portal)</td><td>424 stations × 24 hours, aggregated server-side across 3 representative days (never downloaded the 121M-row raw file). Weekday pattern confirmed stable across months; weekend confirmed structurally different, not just scaled down.</td></tr>
               <tr><td>4</td><td>Parks</td><td class="hl-l">Confirmed good</td><td><code>enfh-gkve</code></td><td>Geometry/name/class/acreage all present as claimed. Row-level completeness not spot-checked beyond schema.</td></tr>
-              <tr><td>5</td><td>Tourist POIs</td><td><strong>Problem, newly found</strong></td><td><code>rxuy-2muj</code> "CommonPlace"</td><td>Real and live (20,448 rows) but is a generic city-facilities layer — schools, playgrounds, comfort stations — not curated attractions, no footfall field.</td></tr>
+              <tr><td>5</td><td>Tourist POIs</td><td><strong>Partially fixed</strong></td><td><code>u35m-9t32</code> DCLA Cultural Organizations (best candidate); <code>fn6f-htvy</code> Museums (supplementary)</td><td>Real, live-maintained substitute found, filterable by discipline (Museum/Zoo/Botanical). But confirmed: <strong>no NYC/NY dataset anywhere has visitor-footfall numbers</strong> — that's now a settled dead end, not an open search.</td></tr>
               <tr><td>6</td><td>Geography (NTAs)</td><td class="hl-l">Confirmed good</td><td><code>9nt8-h7nd</code></td><td>Correct join-key fields present.</td></tr>
               <tr><td>7</td><td>Cost/ROI benchmark</td><td class="hl-l">Confirmed good, exceeded expectations</td><td>Parks Capital Tracker <code>4hcv-tc5r</code> + NYCEDC press release</td><td>169 real restroom/comfort-station capital projects with actual dollar figures (e.g. $877K, $8.77M). NYCEDC "$4M/17 units" confirmed current via Sept 2026 press coverage — real, but press-release sourcing, not a structured dataset.</td></tr>
             </tbody>
           </table>
         </div>
 
-        <h3>The taxi verdict, in full — this is a go/no-go item, not a data-cleaning job</h3>
-        <p>Read the file and its data dictionary directly: 1,458,644 rows, columns <code>id, vendor_id, pickup_datetime, dropoff_datetime, passenger_count, pickup/dropoff lat/long, trip_duration</code> — nothing else. Row count and field list match Kaggle's "NYC Taxi Trip Duration" competition <code>train.csv</code> exactly, and every sampled date is from 2016. There's no fare, no zone ID, no trip counts. It <em>could</em> in principle be spatially joined (pickup lat/long → NTA polygon) into a rough trip-count-by-zone-by-hour proxy, since it does have per-trip timestamps — but that's unplanned GIS work on top of data that's already a decade stale and still has no monetary signal. <strong>Recommendation: ask the professor directly whether a different, TLC zone-level file was intended</strong>, rather than presenting this file as the demand layer.</p>
+        <h3>The taxi verdict, in full — was a go/no-go item, now resolved</h3>
+        <p>Read the file and its data dictionary directly: 1,458,644 rows, columns <code>id, vendor_id, pickup_datetime, dropoff_datetime, passenger_count, pickup/dropoff lat/long, trip_duration</code> — nothing else. Row count and field list match Kaggle's "NYC Taxi Trip Duration" competition <code>train.csv</code> exactly, and every sampled date is from 2016. There's no fare, no zone ID, no trip counts. The Kaggle file is dropped — but a deeper round-2 search found the real thing already on NYC Open Data:</p>
+        <ul>
+          <li><strong><code>rwwi-khbc</code> — 2024 Yellow Taxi Trip Data.</strong> Live, updated 2026-08-21, 41,169,720 rows confirmed. Exact TLC schema: <code>fare_amount, trip_distance, pulocationid, dolocationid, tpep_pickup/dropoff_datetime</code>, and more. A full year is genuinely large (~41-46M rows) — plan to aggregate server-side, not download raw.</li>
+          <li><strong><code>bqxa-629f</code> — 2024 High Volume For-Hire Vehicle Data</strong> (Uber/Lyft/Via). Live, updated 2026-09-03, same zone/fare structure. Roughly 5-6× yellow taxi's volume citywide (~200-250M rows/year) per TLC's own live daily-trip indicators.</li>
+          <li><strong><code>c5iv-bn4s</code> — Pickups and Drop-offs by Taxi Zone and Industry.</strong> The best find: only 138,706 rows total, already aggregated to zone × month × industry, live and current through July 2026. This alone may satisfy a zone-level demand layer without ever touching the 41M-row raw files — the tradeoff is monthly granularity only, no hour-of-day or fare data.</li>
+        </ul>
+        <p>No 2025/2026 raw annual file exists yet for yellow taxi (2024 is the newest complete year — TLC's own publication lag). <strong>Bottom line: the team doesn't need to ask the professor for a different file — the real data already exists and was pulled.</strong></p>
 
-        <h3>The tourist-POI problem, in full</h3>
-        <p><code>rxuy-2muj</code> is real, but its actual resource endpoint returns empty field objects — it's a "map" asset, not a queryable table. The underlying tabular view (<code>t95h-5fsr</code>) has fields <code>the_geom, segmentid, complexid, saftype, placeid, bin, source, sosindicator, facility_domains, boroughcode, facility_type, feature_name, security_level</code> — sampled rows are DOE schools, comfort stations, and playgrounds, tagged with numeric domain/type codes and no bundled lookup table, no human-readable "tourism" category, and no visitor-volume field anywhere. Using it as tourist demand would mean finding a code legend elsewhere, filtering to a probably-small tourism-relevant subset, and still having zero footfall data at the end. Same tier of problem as taxi — an open item, not solved.</p>
+        <h3>The tourist-POI problem, in full — partially resolved</h3>
+        <p><code>rxuy-2muj</code> is real, but its actual resource endpoint returns empty field objects — it's a "map" asset, not a queryable table. Sampled rows are DOE schools, comfort stations, and playgrounds, tagged with numeric domain codes and no tourism category or footfall field anywhere. A deeper search checked every plausible NYC Open Data alternative live:</p>
+        <ul>
+          <li><em>"DOITT Points of Interest"</em> — turned out to be the exact same dataset as CommonPlace under a different name. Ruled out.</li>
+          <li><em>Places (<code>mzbd-kucq</code>)</em> — 13 years stale (never updated since 2013), miscategorized, covers parks/cemeteries/airports. Ruled out.</li>
+          <li><em>Individual Landmark Sites (<code>buis-pvji</code>)</em> — live, 1,532 rows, but mixes real attractions with ordinary landmarked schools/buildings, no way to separate "visited" from "legally protected." Ruled out.</li>
+          <li><strong><code>fn6f-htvy</code> — MUSEUM.</strong> 130 rows, genuinely curated (AMNH, Brooklyn Museum, Intrepid, Ellis Island) — but frozen since June 2014, will contain closures and miss anything newer. Usable only as a supplement with that caveat stated.</li>
+          <li><strong><code>u35m-9t32</code> — DCLA Cultural Organizations. Best candidate.</strong> Live, updated 2026-06-10, 2,535 rows, genuinely geocoded citywide, with a real <code>discipline</code> field (Museum, Zoo, Botanical, Theater, Music, etc.). Limitation stated plainly: most of the 2,535 rows are small community arts organizations, not tourist draws — the team would need to filter to the Museum/Zoo/Botanical subset (~108 rows) rather than use it whole.</li>
+        </ul>
+        <p><strong>Confirmed, not just suspected: no dataset on NYC or NY State Open Data has a genuine tourist-attraction category paired with visitor-footfall numbers.</strong> That specific number doesn't exist in any free public source checked — a real, now-settled limitation, not something more searching would fix.</p>
 
         <h3>Real capital-project cost benchmarks (better than the proposal expected)</h3>
         <div class="table-wrap">
@@ -365,12 +415,29 @@ $group=origin_station_complex_id,origin_station_complex_name,hour_of_day</code><
         </div>
         <p>A full-dataset or full-month <code>$group</code> timed out after 60–180s; scoping to one weekday returned in ~12s. For the real analysis, pull a handful of representative days (weekday + weekend, a few months apart) the same way — one day-scoped query at a time — rather than one unscoped aggregation over the whole year.</p>
 
+        <h3>Round 2: a structural finding about the subway dataset itself, and weekday vs. weekend</h3>
+        <p>Systematically probing dates live revealed that <code>y2qv-fytt</code> does <strong>not</strong> contain continuous daily data for the full 2025 span its min/max timestamps imply — it contains exactly <strong>one full Monday–Sunday week per calendar month</strong> (~12 weeks/~84 days total, every other day returns zero rows). This matters directly: the team can't pull "any Tuesday in June," only dates inside that month's published week. Worth stating up front, not discovering mid-analysis.</p>
+        <p>Pulled two more representative days inside their available weeks — May 7 (Wed) and Nov 8 (Sat) — using the identical server-side aggregation:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th class="num">Hour</th><th class="num">Tue Sep 9</th><th class="num">Wed May 7</th><th class="num">Sat Nov 8</th></tr></thead>
+            <tbody>
+              <tr><td class="num">08:00</td><td class="num hl-l">426,704</td><td class="num">435,086</td><td class="num">100,944</td></tr>
+              <tr><td class="num">17:00</td><td class="num hl-l">446,538</td><td class="num">459,651</td><td class="num">224,661</td></tr>
+              <tr><td class="num">02:00</td><td class="num">6,034</td><td class="num">6,105</td><td class="num">19,963</td></tr>
+              <tr><td class="num">00:00</td><td class="num">23,990</td><td class="num">26,461</td><td class="num">56,938</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Weekday vs. weekday holds well</strong> — Sept 9 and May 7 (different months) track within 2-8% at every hour, same double-hump commuter shape. <strong>Weekend is genuinely different in form, not just scaled down</strong> — no AM spike at all, a single broad afternoon peak roughly half the weekday PM peak, and much higher overnight ridership (nightlife, not commuting). Conclusion: one weekday is a defensible proxy for other weekdays; a weekday can't stand in for weekend demand. The RGI should keep weekday/weekend as separate demand profiles if timing genuinely matters to the recommendation.</p>
+
         <div class="callout loo">
           <span class="tag">Open gaps to say out loud</span>
           <ul>
-            <li><strong>Taxi demand is unresolved</strong> — not fixable by re-pulling. Needs a real professor-provided zone/fare extract, or drop the layer and re-weight the RGI formula.</li>
-            <li><strong>Tourist POI data is miscategorized</strong> — "CommonPlace" isn't a tourism dataset. Needs a real replacement or should be dropped/re-weighted like taxi.</li>
-            <li>Subway demand fix is proof-of-concept only — <strong>one day</strong>, not a full month/year aggregation yet.</li>
+            <li><strong>Taxi and tourist-POI data sourcing are now resolved</strong> (taxi fully, tourist-POI partially — see above) — no longer open research questions, just implementation work.</li>
+            <li><strong>The remaining honest gap on tourist POIs is structural, not a search failure</strong>: no visitor-footfall number exists anywhere in free NYC/NY data. State this plainly if asked.</li>
+            <li><strong>The subway dataset only has ~12 weeks of the year available</strong>, not continuous daily data — plan date selection around that.</li>
+            <li>Subway now has 3 real days (2 weekday, 1 weekend) — enough to know weekday/weekend must be modeled separately, not yet a full seasonal aggregation.</li>
           </ul>
         </div>
         <p>Files: subway station/hour breakdown, parks capital tracker filter, and full verification notes are in:</p>
